@@ -1,0 +1,40 @@
+
+#Configuracion para nuestra h2 para hacer demos y base de datos
+#server:
+#  port: 8097
+#spring:
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:file:~/data/configurationDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    username: sa
+#    password: admin
+#  jpa:
+#    database: h2
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: false
+#    database-platform: org.hibernate.dialect.H2Dialect
+#    properties:
+#      hibernate:
+#        show_sql: true
+#        use_sql_comment: false
+#        format_sql: false
+#logging:
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+spring:
+  application:
+    name: configuration-service
+  cloud:
+    config:
+      uri: http://localhost:8081
+      username: root
+      password: s3cr3t
+  boot:
+    admin:
+      client:
+        url: http://localhost:8086
