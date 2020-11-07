@@ -85,6 +85,7 @@ public class ConfigurationController {
 
     public void okResponse(Object result) {
         response.setStatus(HttpStatus.OK.value());
+        response.setMessage("SERVICE SUCCESS");
         response.setResult(result);
         status = HttpStatus.OK;
     }
