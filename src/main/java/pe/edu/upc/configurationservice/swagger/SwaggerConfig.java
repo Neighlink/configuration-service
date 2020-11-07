@@ -1,4 +1,4 @@
-package pe.edu.upc.profile.swagger;
+package pe.edu.upc.configurationservice.swagger;
 
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
