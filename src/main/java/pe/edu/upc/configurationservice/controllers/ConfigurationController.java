@@ -72,12 +72,14 @@ public class ConfigurationController {
     public void unauthorizedResponse() {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setMessage("UNAUTHORIZED USER");
+        response.setResult(null);
         status = HttpStatus.UNAUTHORIZED;
     }
 
     public void notFoundResponse() {
         response.setStatus(HttpStatus.NOT_FOUND.value());
         response.setMessage("ENTITY NOT FOUND");
+        response.setResult(null);
         status = HttpStatus.NOT_FOUND;
     }
 
@@ -96,6 +98,7 @@ public class ConfigurationController {
 
     public void internalServerErrorResponse(String message) {
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        response.setResult(null);
         response.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase() + " => " + message);
     }
 
@@ -127,7 +130,11 @@ public class ConfigurationController {
                 return new ResponseEntity<>(response, status);
             }
             Optional<List<PaymentCategory>> paymentCategories = paymentCategoryService.findAllByCondominiumId(condominiumId);
-            okResponse(paymentCategories.get());
+            if (paymentCategories.isEmpty()) {
+                okResponse(new ArrayList<>());
+            } else {
+                okResponse(paymentCategories.get());
+            }
             return new ResponseEntity<>(response, status);
         } catch
         (Exception e) {
@@ -224,7 +231,11 @@ public class ConfigurationController {
                 return new ResponseEntity<>(response, status);
             }
             Optional<List<Department>> departments = departmentService.findAllByBuildingId(buildingId);
-            okResponse(departments.get());
+            if (departments.isEmpty()) {
+                okResponse(new ArrayList<>());
+            } else {
+                okResponse(departments.get());
+            }
             return new ResponseEntity<>(response, status);
         } catch
         (Exception e) {
