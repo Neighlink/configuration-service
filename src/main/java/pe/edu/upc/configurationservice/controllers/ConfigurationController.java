@@ -196,7 +196,7 @@ public class ConfigurationController {
     }
 
     @DeleteMapping(path = "/condominiums/{condominiumId}/paymentCategories/{paymentCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> deletePaymentCategoryByCondominium(@PathVariable("condominiumId") Long condominiumId, @PathVariable("paymentCategoryId") Long paymentCategoryId, @PathVariable("departmentId") Long departmentId, @RequestHeader String Authorization) {
+    public ResponseEntity<Response> deletePaymentCategoryByCondominium(@PathVariable("condominiumId") Long condominiumId, @PathVariable("paymentCategoryId") Long paymentCategoryId, @RequestHeader String Authorization) {
         try {
             ResponseAuth authToken = authToken(Authorization);
             LOGGER.info(String.valueOf(authToken));
