@@ -192,7 +192,7 @@ public class ConfigurationController {
     }
 
     @DeleteMapping(path = "/condominiums/{condominiumId}/paymentCategories/{paymentCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> deletePaymentCategoryByCondominium(@PathParam("condominiumId") Long condominiumId, @PathParam("paymentCategoryId") Long paymentCategoryId, @PathParam Long departmentId, @RequestHeader String Authorization) {
+    public ResponseEntity<Response> deletePaymentCategoryByCondominium(@PathParam("condominiumId") Long condominiumId, @PathParam("paymentCategoryId") Long paymentCategoryId, @PathParam("departmentId") Long departmentId, @RequestHeader String Authorization) {
         try {
             ResponseAuth authToken = authToken(Authorization);
             if (!authToken.isAuthorized()) {
@@ -299,7 +299,7 @@ public class ConfigurationController {
     }
 
     @DeleteMapping(path = "/condominiums/{condominiumId}/buildings/{buildingId}/departments/{departmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> deleteDepartmentsByBuilding(@PathParam("condominiumId") Long condominiumId, @PathParam("buildingId") Long buildingId, @PathParam Long departmentId, @RequestHeader String Authorization) {
+    public ResponseEntity<Response> deleteDepartmentsByBuilding(@PathParam("condominiumId") Long condominiumId, @PathParam("buildingId") Long buildingId, @PathParam("departmentId") Long departmentId, @RequestHeader String Authorization) {
         try {
             ResponseAuth authToken = authToken(Authorization);
             if (!authToken.isAuthorized()) {
