@@ -244,6 +244,28 @@ public class ConfigurationController {
         }
     }
 
+    @GetMapping(path = "/condominiums/{condominiumId}/buildings/{buildingId}/departments/{deparmentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> getDepartment(@PathVariable("condominiumId") Long condominiumId, @PathVariable("buildingId") Long buildingId, @PathVariable("deparmentId") Long deparmentId, @RequestHeader String Authorization) {
+        try {
+            ResponseAuth authToken = authToken(Authorization);
+            if (!authToken.isAuthorized()) {
+                unauthorizedResponse();
+                return new ResponseEntity<>(response, status);
+            }
+            Optional<Department> department = departmentService.findById(deparmentId);
+            if (department.isEmpty()) {
+                okResponse(null);
+            } else {
+                okResponse(department.get());
+            }
+            return new ResponseEntity<>(response, status);
+        } catch
+        (Exception e) {
+            internalServerErrorResponse(e.getMessage());
+            return new ResponseEntity<>(response, status);
+        }
+    }
+
     @PostMapping(path = "/condominiums/{condominiumId}/buildings/{buildingId}/departments", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> postDepartmentsByBuilding(@PathVariable("condominiumId") Long condominiumId, @PathVariable("buildingId") Long buildingId, @RequestHeader String Authorization, @RequestBody RequestDepartment requestDepartment) {
         try {
@@ -354,6 +376,27 @@ public class ConfigurationController {
         }
     }
 
+    @GetMapping(path = "/condominiums/{condominiumId}/buildings/{buildingId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> getBuilding(@PathVariable("condominiumId") Long condominiumId, @PathVariable("buildingId") Long buildingId, @RequestHeader String Authorization) {
+        try {
+            ResponseAuth authToken = authToken(Authorization);
+            if (!authToken.isAuthorized()) {
+                unauthorizedResponse();
+                return new ResponseEntity<>(response, status);
+            }
+            Optional<Building> building = buildingService.findById(buildingId);
+            if (building.isEmpty()) {
+                okResponse(null);
+            } else {
+                okResponse(building.get());
+            }
+            return new ResponseEntity<>(response, status);
+        } catch
+        (Exception e) {
+            internalServerErrorResponse(e.getMessage());
+            return new ResponseEntity<>(response, status);
+        }
+    }
 
     @PostMapping(path = "/condominiums/{condominiumId}/buildings", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> postBuildinfByCondominium(@PathVariable("condominiumId") Long condominiumId, @RequestHeader String Authorization, @RequestBody RequestBuilding requestBuilding) {
