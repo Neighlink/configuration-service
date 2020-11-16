@@ -44,4 +44,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Optional<List<Department>> findAllByBuildingId(Long buildingId) {
         return departmentRepository.findAllByBuildingId(buildingId);
     }
+
+    @Override
+    public Optional<Department> findByCode(String code) {
+        return departmentRepository.findByCode(code);
+    }
 }

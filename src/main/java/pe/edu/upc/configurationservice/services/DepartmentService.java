@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface DepartmentService extends CrudService<Department, Long> {
     Optional<List<Department>> findAllByBuildingId(Long buildingId);
+    Optional<Department> findByCode(String code);
 }

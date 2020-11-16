@@ -17,6 +17,8 @@ public class Department {
     @Column(nullable = false)
     private Long buildingId;
     @Column(nullable = false)
+    private Long condominiumId;
+    @Column(nullable = false)
     private String secretCode;
     @Column(nullable = true)
     private Integer limiteRegister;

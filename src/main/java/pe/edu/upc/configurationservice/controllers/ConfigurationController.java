@@ -15,6 +15,7 @@ import pe.edu.upc.configurationservice.services.BuildingService;
 import pe.edu.upc.configurationservice.services.DepartmentService;
 import pe.edu.upc.configurationservice.services.PaymentCategoryService;
 
+import javax.websocket.server.PathParam;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -120,107 +121,6 @@ public class ConfigurationController {
         return result.toString();
     }
 
-    //INIT PAYMENT CATEGORY
-    @GetMapping(path = "/condominiums/{condominiumId}/paymentCategories", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> getPaymentCategoryByDepartment(@PathVariable("condominiumId") Long condominiumId, @RequestHeader String Authorization) {
-        try {
-            ResponseAuth authToken = authToken(Authorization);
-            if (!authToken.isAuthorized()) {
-                unauthorizedResponse();
-                return new ResponseEntity<>(response, status);
-            }
-            Optional<List<PaymentCategory>> paymentCategories = paymentCategoryService.findAllByCondominiumId(condominiumId);
-            if (paymentCategories.isEmpty()) {
-                okResponse(new ArrayList<>());
-            } else {
-                okResponse(paymentCategories.get());
-            }
-            return new ResponseEntity<>(response, status);
-        } catch
-        (Exception e) {
-            internalServerErrorResponse(e.getMessage());
-            return new ResponseEntity<>(response, status);
-        }
-    }
-
-    @PostMapping(path = "/condominiums/{condominiumId}/paymentCategories", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> postPaymentCategoryByCondominium(@PathVariable("condominiumId") Long condominiumId, @RequestHeader String Authorization, @RequestBody RequestPaymentCategory requestPaymentCategory) {
-        try {
-            ResponseAuth authToken = authToken(Authorization);
-            if (!authToken.isAuthorized()) {
-                unauthorizedResponse();
-                return new ResponseEntity<>(response, status);
-            }
-            PaymentCategory paymentCategory = new PaymentCategory();
-            paymentCategory.setCondominiumId(condominiumId);
-            paymentCategory.setName(requestPaymentCategory.getName());
-            paymentCategory.setDescription(requestPaymentCategory.getDescription());
-            paymentCategory.setDelete(false);
-            PaymentCategory paymentCategorySaved = paymentCategoryService.save(paymentCategory);
-            okResponse(paymentCategorySaved);
-            return new ResponseEntity<>(response, status);
-        } catch
-        (Exception e) {
-            internalServerErrorResponse(e.getMessage());
-            return new ResponseEntity<>(response, status);
-        }
-    }
-
-    @PutMapping(path = "/condominiums/{condominiumId}/paymentCategories/{paymentCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> updatePaymentCategoryByDepartment(@PathVariable("condominiumId") Long condominiumId, @PathVariable("paymentCategoryId") Long paymentCategoryId, @RequestHeader String Authorization, @RequestBody RequestPaymentCategory requestPaymentCategory) {
-        try {
-            ResponseAuth authToken = authToken(Authorization);
-            if (!authToken.isAuthorized()) {
-                unauthorizedResponse();
-                return new ResponseEntity<>(response, status);
-            }
-            Optional<PaymentCategory> paymentCategory = paymentCategoryService.findById(paymentCategoryId);
-            if (paymentCategory.isEmpty()) {
-                notFoundResponse();
-                return new ResponseEntity<>(response, status);
-            }
-
-            if (!requestPaymentCategory.getName().isEmpty())
-                paymentCategory.get().setName(requestPaymentCategory.getName());
-            if (!requestPaymentCategory.getDescription().isEmpty())
-                paymentCategory.get().setDescription(requestPaymentCategory.getDescription());
-
-            PaymentCategory paymentCategorySaved = paymentCategoryService.save(paymentCategory.get());
-            okResponse(paymentCategorySaved);
-            return new ResponseEntity<>(response, status);
-        } catch
-        (Exception e) {
-            internalServerErrorResponse(e.getMessage());
-            return new ResponseEntity<>(response, status);
-        }
-    }
-
-    @DeleteMapping(path = "/condominiums/{condominiumId}/paymentCategories/{paymentCategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Response> deletePaymentCategoryByCondominium(@PathVariable("condominiumId") Long condominiumId, @PathVariable("paymentCategoryId") Long paymentCategoryId, @RequestHeader String Authorization) {
-        try {
-            ResponseAuth authToken = authToken(Authorization);
-            LOGGER.info(String.valueOf(authToken));
-            if (!authToken.isAuthorized()) {
-                unauthorizedResponse();
-                return new ResponseEntity<>(response, status);
-            }
-            Optional<PaymentCategory> paymentCategory = paymentCategoryService.findById(paymentCategoryId);
-            if (paymentCategory.isEmpty()) {
-                notFoundResponse();
-                return new ResponseEntity<>(response, status);
-            }
-            paymentCategory.get().setDelete(true);
-            paymentCategoryService.save(paymentCategory.get());
-            okResponse(null);
-            return new ResponseEntity<>(response, status);
-        } catch
-        (Exception e) {
-            internalServerErrorResponse(e.getMessage());
-            return new ResponseEntity<>(response, status);
-        }
-    }
-    //FINISH PAYMENT CATEGORY
-
     //INIT DEPARTMENT
     @GetMapping(path = "/condominiums/{condominiumId}/buildings/{buildingId}/departments", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> getDepartmentsByBuilding(@PathVariable("condominiumId") Long condominiumId, @PathVariable("buildingId") Long buildingId, @RequestHeader String Authorization) {
@@ -280,6 +180,7 @@ public class ConfigurationController {
                 department.setName(requestDepartment.getName());
             department.setBuildingId(buildingId);
             department.setLimiteRegister(requestDepartment.getLimitRegister());
+            department.setCondominiumId(condominiumId);
             department.setSecretCode(generateCode());
 
             Department departmentSaved = departmentService.save(department);
@@ -467,4 +368,26 @@ public class ConfigurationController {
         }
     }
     //FINISH BUILDING
+
+    @GetMapping(path = "/departments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Response> getBuilding(@PathParam("code") String code, @RequestHeader String Authorization) {
+        try {
+            ResponseAuth authToken = authToken(Authorization);
+            if (!authToken.isAuthorized()) {
+                unauthorizedResponse();
+                return new ResponseEntity<>(response, status);
+            }
+            Optional<Department> department = departmentService.findByCode(code);
+            if (department.isEmpty()) {
+                notFoundResponse();
+            } else {
+                okResponse(department.get());
+            }
+            return new ResponseEntity<>(response, status);
+        } catch
+        (Exception e) {
+            internalServerErrorResponse(e.getMessage());
+            return new ResponseEntity<>(response, status);
+        }
+    }
 }
