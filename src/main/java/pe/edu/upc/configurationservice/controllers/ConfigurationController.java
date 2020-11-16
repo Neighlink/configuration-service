@@ -9,11 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.configurationservice.entities.Building;
 import pe.edu.upc.configurationservice.entities.Department;
-import pe.edu.upc.configurationservice.entities.PaymentCategory;
 import pe.edu.upc.configurationservice.models.*;
 import pe.edu.upc.configurationservice.services.BuildingService;
 import pe.edu.upc.configurationservice.services.DepartmentService;
-import pe.edu.upc.configurationservice.services.PaymentCategoryService;
 
 import javax.websocket.server.PathParam;
 import java.net.URI;
@@ -107,8 +105,7 @@ public class ConfigurationController {
     private BuildingService buildingService;
     @Autowired
     private DepartmentService departmentService;
-    @Autowired
-    private PaymentCategoryService paymentCategoryService;
+
 
     public String generateCode() {
         String data = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
