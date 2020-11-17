@@ -22,5 +22,7 @@ public class Department {
     private String secretCode;
     @Column(nullable = true)
     private Integer limiteRegister;
+    @Column(nullable = true)
+    private boolean isDelete;
 
 }

@@ -179,6 +179,7 @@ public class ConfigurationController {
             department.setLimiteRegister(requestDepartment.getLimitRegister());
             department.setCondominiumId(condominiumId);
             department.setSecretCode(generateCode());
+            department.setDelete(false);
 
             Department departmentSaved = departmentService.save(department);
 
@@ -240,7 +241,8 @@ public class ConfigurationController {
                 notFoundResponse();
                 return new ResponseEntity<>(response, status);
             }
-            departmentService.deleteById(departmentId);
+            department.get().setDelete(true);
+            departmentService.save(department.get());
             okResponse(null);
             return new ResponseEntity<>(response, status);
         } catch
@@ -308,6 +310,7 @@ public class ConfigurationController {
             building.setName(requestBuilding.getName());
             building.setCondominiumId(condominiumId);
             building.setNumberOfHomes(0);
+            building.setDelete(false);
             Building buildingSaved = buildingService.save(building);
             okResponse(buildingSaved);
             return new ResponseEntity<>(response, status);
@@ -355,7 +358,8 @@ public class ConfigurationController {
                 notFoundResponse();
                 return new ResponseEntity<>(response, status);
             }
-            buildingService.deleteById(buildingId);
+            building.get().setDelete(true);
+            buildingService.save(building.get());
             okResponse(null);
             return new ResponseEntity<>(response, status);
         } catch

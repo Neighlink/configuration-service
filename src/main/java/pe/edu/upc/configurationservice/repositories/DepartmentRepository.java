@@ -12,8 +12,9 @@ import java.util.Optional;
 
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
-    @Query("SELECT d FROM Department d WHERE d.buildingId = :buildingId")
+    @Query("SELECT d FROM Department d WHERE d.buildingId = :buildingId AND d.isDelete = false")
     Optional<List<Department>> findAllByBuildingId(@Param("buildingId") Long buildingId);
-    @Query("SELECT d FROM Department d WHERE d.secretCode = :code")
+
+    @Query("SELECT d FROM Department d WHERE d.secretCode = :code AND d.isDelete = false")
     Optional<Department> findByCode(@Param("code") String code);
 }

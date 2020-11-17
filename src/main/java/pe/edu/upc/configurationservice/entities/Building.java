@@ -18,4 +18,6 @@ public class Building {
     private Integer numberOfHomes;
     @Column(nullable = false)
     private Long condominiumId;
+    @Column(nullable = false)
+    private boolean isDelete;
 }
